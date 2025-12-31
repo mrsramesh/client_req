@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CDS - Client Driven Solutions</title>
     <style>
         * {
@@ -15,10 +15,10 @@
             font-family: 'Satoshi', Arial, sans-serif;
             background-color: #000111;
             color: white;
-            overflow-x: hidden;
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: fixed;
         }
         
         @font-face {
@@ -50,76 +50,94 @@
             font-weight: 900;
         }
         
-        .page-container {
+        .fullscreen-container {
             width: 1512px;
             height: 982px;
-            position: relative;
+            position: absolute;
             background: #000111;
             overflow: hidden;
-            margin: 0;
-            padding: 0;
-            transform-origin: top left;
-            left: 50%;
-            transform: translateX(-50%) scale(var(--scale-factor));
+            transform-origin: 0 0;
+            transform: scale(var(--scale-factor));
+            left: 0;
+            top: 0;
+            min-width: 100%;
+            min-height: 100%;
+            display: none;
         }
         
-        /* Automatic scaling based on viewport width */
-        @media (max-width: 1600px) {
+        .fullscreen-container.active {
+            display: block;
+        }
+        
+        /* Calculate scale factor based on screen size */
+        @media (max-width: 1512px) {
             :root {
-                --scale-factor: 0.85;
+                --scale-factor: calc(100vw / 1512);
             }
         }
         
-        @media (max-width: 1400px) {
-            :root {
-                --scale-factor: 0.75;
-            }
-        }
-        
-        @media (max-width: 1200px) {
-            :root {
-                --scale-factor: 0.65;
-            }
-        }
-        
-        @media (max-width: 1000px) {
-            :root {
-                --scale-factor: 0.55;
-            }
-        }
-        
-        @media (max-width: 800px) {
-            :root {
-                --scale-factor: 0.45;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            :root {
-                --scale-factor: 0.35;
-            }
-        }
-        
-        @media (min-width: 1601px) {
+        @media (min-width: 1513px) {
             :root {
                 --scale-factor: 1;
             }
         }
         
-        /* Force full width display */
-        html, body {
-            width: 100%;
-            overflow-x: hidden;
+        /* Center on larger screens */
+        @media (min-width: 1513px) {
+            .fullscreen-container {
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
         
-        /* Ensure no scrollbars appear */
-        ::-webkit-scrollbar {
-            display: none;
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        /* Navigation buttons */
+        .page-nav {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-family: 'Satoshi', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Make Insights button clickable */
+        .insights-btn {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .insights-btn:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
         }
     </style>
 </head>
 <body>
-    <div class="page-container">
+    <!-- Page 1 - Home Page -->
+    <div id="page1" class="fullscreen-container active">
         <div style="width: 1949.96px; height: 1949.96px; left: -42.33px; top: -48px; position: absolute; transform: rotate(10deg); transform-origin: top left; background: linear-gradient(142deg, #DB4F2D 19%, rgba(0, 0, 0, 0) 100%), linear-gradient(259deg, black 0%, #171819 73%); box-shadow: -232.3304901123047px -179.95541381835938px 179.55252075195312px rgba(219, 79, 45, 0.66); border-radius: 9999px"></div>
         <div style="width: 1512px; height: 275px; left: 0px; top: 0px; position: absolute; background: linear-gradient(90deg, rgba(88.71, 49.83, 241.02, 0.70) 0%, rgba(219, 79, 45, 0.70) 28%, rgba(15, 55, 238, 0.70) 50%, rgba(13, 40, 183, 0.70) 71%, rgba(181, 160, 247, 0.70) 88%, rgba(6.12, 9.23, 51.74, 0.70) 100%); box-shadow: 408.6000061035156px 408.6000061035156px 408.6000061035156px; filter: blur(204.30px)"></div>
         <div style="width: 1512px; height: 9px; left: 0px; top: 0px; position: absolute; background: linear-gradient(90deg, #060934 10%, #5932F1 43%, #060934 100%)"></div>
@@ -135,7 +153,7 @@
                 <div data-property-1="Default" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center; gap: 10px; display: flex">
                     <div style="text-align: center; color: white; font-size: 20px; font-family: Satoshi; font-weight: 400; line-height: 36px; word-wrap: break-word">Industries</div>
                 </div>
-                <div data-property-1="Default" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center; gap: 10px; display: flex">
+                <div data-property-1="Default" class="insights-btn" onclick="showPage2()" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center; gap: 10px; display: flex">
                     <div style="text-align: center; color: white; font-size: 20px; font-family: Satoshi; font-weight: 400; line-height: 36px; word-wrap: break-word">Insights</div>
                 </div>
                 <div data-property-1="Default" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center; gap: 10px; display: flex">
@@ -166,5 +184,137 @@
             </svg>
         </div>
     </div>
+
+    <!-- Page 2 - Insights Page -->
+    <div id="page2" class="fullscreen-container">
+        <div data-layer="4" style="width: 1512px; height: 982px; position: relative; background: var(--black101, #000111); overflow: hidden">
+            <div data-layer="Ellipse 2" class="Ellipse2" style="width: 488.03px; height: 702.49px; left: -231px; top: 810.73px; position: absolute; transform: rotate(-41deg); transform-origin: top left; background: rgba(88.71, 49.83, 241.02, 0.60); box-shadow: 327.8809814453125px 327.8809814453125px 327.8809814453125px; border-radius: 9999px; filter: blur(163.94px)"></div>
+            <div data-layer="Ellipse 3" class="Ellipse3" style="width: 488.03px; height: 702.49px; left: 655.41px; top: 520px; position: absolute; transform: rotate(56deg); transform-origin: top left; background: rgba(219, 79, 45, 0.40); box-shadow: 327.8809814453125px 327.8809814453125px 327.8809814453125px; border-radius: 9999px; filter: blur(163.94px)"></div>
+            <div data-layer="Ellipse 2" class="Ellipse2" style="width: 488.03px; height: 702.49px; left: 1091px; top: -0.27px; position: absolute; transform: rotate(-41deg); transform-origin: top left; background: rgba(88.71, 49.83, 241.02, 0.60); box-shadow: 327.8809814453125px 327.8809814453125px 327.8809814453125px; border-radius: 9999px; filter: blur(163.94px)"></div>
+            <div data-layer="Frame 25" class="Frame25" style="width: 386px; height: 973px; left: 890px; top: 9px; position: absolute; background: linear-gradient(221deg, #CA5758 0%, #5932F1 100%); overflow: hidden">
+                <div data-layer="Q3" class="Q3" style="left: 21px; top: 644px; position: absolute; text-align: justify; color: white; font-size: 80px; font-family: Nico Moji; font-weight: 400; line-height: 20px; word-wrap: break-word">Q3</div>
+            </div>
+            <div data-layer="Q2" class="Q2" style="left: 502px; top: 653px; position: absolute; text-align: justify; color: #5932F1; font-size: 80px; font-family: Nico Moji; font-weight: 400; line-height: 20px; word-wrap: break-word">Q2</div>
+            <div data-layer="Q4" class="Q4" style="left: 1329px; top: 653px; position: absolute; text-align: justify; color: #5932F1; font-size: 80px; font-family: Nico Moji; font-weight: 400; line-height: 20px; word-wrap: break-word">Q4</div>
+            <div data-layer="Q1" class="Q1" style="left: 92px; top: 653px; position: absolute; text-align: justify; color: #5932F1; font-size: 80px; font-family: Nico Moji; font-weight: 400; line-height: 20px; word-wrap: break-word">Q1</div>
+            <div data-layer="Frame 20" class="Frame20" style="width: 1373px; padding-left: 30px; padding-right: 30px; padding-top: 20px; padding-bottom: 20px; left: 70px; top: 9px; position: absolute; background: rgba(202, 186, 244, 0.12); border-radius: 94px; backdrop-filter: blur(2px); justify-content: center; align-items: center; gap: 178px; display: inline-flex">
+                <div data-layer="Logo" class="Logo" style="width: 104px; flex-direction: column; justify-content: center; align-items: center; display: inline-flex">
+                    <div data-layer="CDS" class="Cds" style="align-self: stretch; color: white; font-size: 47.54px; font-family: Nico Moji; font-weight: 400; word-wrap: break-word">CDS</div>
+                    <div data-layer="CLIENT DRIVEN SOLUTIONS" class="ClientDrivenSolutions" style="align-self: stretch; text-align: center; color: white; font-size: 5.94px; font-family: Satoshi; font-weight: 400; letter-spacing: 0.95px; word-wrap: break-word">CLIENT DRIVEN SOLUTIONS</div>
+                </div>
+                <div data-layer="Frame 4" class="Frame4" style="justify-content: flex-start; align-items: center; gap: 29px; display: flex">
+                    <div data-layer="Secondary Button" data-property-1="Default" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center; gap: 10px; display: flex">
+                        <div data-layer="Secondary Button" class="SecondaryButton" style="text-align: center; color: white; font-size: 20px; font-family: Satoshi; font-weight: 400; line-height: 36px; word-wrap: break-word">Services</div>
+                    </div>
+                    <div data-layer="Secondary Button" data-property-1="Default" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center; gap: 10px; display: flex">
+                        <div data-layer="Secondary Button" class="SecondaryButton" style="text-align: center; color: white; font-size: 20px; font-family: Satoshi; font-weight: 400; line-height: 36px; word-wrap: break-word">Industries</div>
+                    </div>
+                    <div data-layer="Secondary Button" data-property-1="Variant2" class="insights-btn" onclick="showPage1()" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; background: rgba(255, 255, 255, 0.07); border-radius: 46px; justify-content: center; align-items: center; gap: 10px; display: flex">
+                        <div data-layer="Secondary Button" class="SecondaryButton" style="text-align: center; color: white; font-size: 20px; font-family: Satoshi; font-weight: 400; line-height: 36px; word-wrap: break-word">Insights</div>
+                    </div>
+                    <div data-layer="Secondary Button" data-property-1="Default" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center; gap: 10px; display: flex">
+                        <div data-layer="Secondary Button" class="SecondaryButton" style="text-align: center; color: white; font-size: 20px; font-family: Satoshi; font-weight: 400; line-height: 36px; word-wrap: break-word">About Us</div>
+                    </div>
+                    <div data-layer="Secondary Button" data-property-1="Default" style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center; gap: 10px; display: flex">
+                        <div data-layer="Secondary Button" class="SecondaryButton" style="text-align: center; color: white; font-size: 20px; font-family: Satoshi; font-weight: 400; line-height: 36px; word-wrap: break-word">Careers</div>
+                    </div>
+                </div>
+                <div data-layer="Frame 162" class="Frame162" style="justify-content: flex-end; align-items: center; gap: 40px; display: flex">
+                    <div data-layer="Primary Button" data-property-1="Default" style="width: 177px; padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px; background: rgba(255, 255, 255, 0.08); box-shadow: 0px 7px 21.899999618530273px rgba(219, 79, 45, 0.40); border-radius: 54px; outline: 1px #DB4F2D solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: flex">
+                        <div data-layer="Button 01" class="Button01" style="text-align: center; color: white; font-size: 20px; font-family: Satoshi; font-weight: 400; line-height: 36px; word-wrap: break-word">Contact Us</div>
+                    </div>
+                </div>
+            </div>
+            <div data-layer="Frame 19" class="Frame19" style="width: 414.47px; height: 414.47px; left: -356px; top: 210.54px; position: absolute; border: 1.24px rgba(255, 255, 255, 0.44) solid"></div>
+            <div data-layer="Frame 20" class="Frame20" style="width: 414.47px; height: 414.47px; left: 59.71px; top: 210.54px; position: absolute; border-top: 1.24px rgba(255, 255, 255, 0.44) solid; border-right: 1.24px rgba(255, 255, 255, 0.44) solid; border-bottom: 1.24px rgba(255, 255, 255, 0.44) solid"></div>
+            <div data-layer="Frame 21" class="Frame21" style="width: 414.47px; height: 414.47px; left: 475.41px; top: 210.54px; position: absolute; border-top: 1.24px rgba(255, 255, 255, 0.44) solid; border-right: 1.24px rgba(255, 255, 255, 0.44) solid; border-bottom: 1.24px rgba(255, 255, 255, 0.44) solid"></div>
+            <div data-layer="Frame 22" class="Frame22" style="width: 414.47px; height: 414.47px; left: 891.12px; top: 210.54px; position: absolute; border-top: 1.24px rgba(255, 255, 255, 0.44) solid; border-right: 1.24px rgba(255, 255, 255, 0.44) solid; border-bottom: 1.24px rgba(255, 255, 255, 0.44) solid"></div>
+            <div data-layer="Frame 23" class="Frame23" style="width: 414.47px; height: 414.47px; left: 1306.82px; top: 210.54px; position: absolute; border-top: 1.24px rgba(255, 255, 255, 0.44) solid; border-right: 1.24px rgba(255, 255, 255, 0.44) solid; border-bottom: 1.24px rgba(255, 255, 255, 0.44) solid"></div>
+            <div data-layer="Frame 24" class="Frame24" style="width: 414.47px; height: 414.47px; left: 1722.53px; top: 210.54px; position: absolute; border-top: 1.24px rgba(255, 255, 255, 0.44) solid; border-right: 1.24px rgba(255, 255, 255, 0.44) solid; border-bottom: 1.24px rgba(255, 255, 255, 0.44) solid"></div>
+            
+            <!-- SVG elements -->
+            <div data-svg-wrapper data-layer="Ellipse 5" class="Ellipse5" style="left: 1279px; top: 598px; position: absolute">
+                <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="27" cy="27" r="27" fill="white" fill-opacity="0.15"/>
+                </svg>
+            </div>
+            <div data-svg-wrapper data-layer="Ellipse 4" class="Ellipse4" style="left: 1291px; top: 610px; position: absolute">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="15" r="15" fill="white"/>
+                </svg>
+            </div>
+            <div data-svg-wrapper data-layer="Ellipse 5" class="Ellipse5" style="left: 33px; top: 598px; position: absolute">
+                <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="27" cy="27" r="27" fill="white" fill-opacity="0.15"/>
+                </svg>
+            </div>
+            <div data-svg-wrapper data-layer="Ellipse 4" class="Ellipse4" style="left: 45px; top: 610px; position: absolute">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="15" r="15" fill="white"/>
+                </svg>
+            </div>
+            <div data-svg-wrapper data-layer="Ellipse 5" class="Ellipse5" style="left: 448px; top: 598px; position: absolute">
+                <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="27" cy="27" r="27" fill="white" fill-opacity="0.15"/>
+                </svg>
+            </div>
+            <div data-svg-wrapper data-layer="Ellipse 4" class="Ellipse4" style="left: 460px; top: 610px; position: absolute">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="15" r="15" fill="white"/>
+                </svg>
+            </div>
+            <div data-svg-wrapper data-layer="Ellipse 5" class="Ellipse5" style="left: 864px; top: 598px; position: absolute">
+                <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="27" cy="27" r="27" fill="white" fill-opacity="0.15"/>
+                </svg>
+            </div>
+            <div data-svg-wrapper data-layer="Ellipse 4" class="Ellipse4" style="left: 876px; top: 610px; position: absolute">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="15" r="15" fill="white"/>
+                </svg>
+            </div>
+            
+            <div data-layer="Frame 14" class="Frame14" style="width: 201px; left: 92px; top: 726px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 12px; display: inline-flex">
+                <div data-layer="Title" class="Title" style="align-self: stretch; color: white; font-size: 30px; font-family: Satoshi; font-weight: 500; line-height: 28px; word-wrap: break-word">Title</div>
+                <div data-layer="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore" class="LoremIpsumDolorSitAmetConsecteturAdipiscingElitSedDoEiusmodTemporIncididuntUtLaboreEtDolore" style="align-self: stretch; text-align: justify; color: white; font-size: 16px; font-family: Satoshi; font-weight: 400; line-height: 20px; word-wrap: break-word">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore </div>
+            </div>
+            <div data-layer="Frame 26" class="Frame26" style="width: 201px; left: 505px; top: 726px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 12px; display: inline-flex">
+                <div data-layer="Title" class="Title" style="align-self: stretch; color: white; font-size: 30px; font-family: Satoshi; font-weight: 500; line-height: 28px; word-wrap: break-word">Title</div>
+                <div data-layer="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore" class="LoremIpsumDolorSitAmetConsecteturAdipiscingElitSedDoEiusmodTemporIncididuntUtLaboreEtDolore" style="align-self: stretch; text-align: justify; color: white; font-size: 16px; font-family: Satoshi; font-weight: 400; line-height: 20px; word-wrap: break-word">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore </div>
+            </div>
+            <div data-layer="Frame 27" class="Frame27" style="width: 201px; left: 918px; top: 726px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 12px; display: inline-flex">
+                <div data-layer="Title" class="Title" style="align-self: stretch; color: white; font-size: 30px; font-family: Satoshi; font-weight: 500; line-height: 28px; word-wrap: break-word">Title</div>
+                <div data-layer="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore" class="LoremIpsumDolorSitAmetConsecteturAdipiscingElitSedDoEiusmodTemporIncididuntUtLaboreEtDolore" style="align-self: stretch; text-align: justify; color: white; font-size: 16px; font-family: Satoshi; font-weight: 400; line-height: 20px; word-wrap: break-word">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore </div>
+            </div>
+            <div data-layer="Frame 28" class="Frame28" style="width: 201px; left: 1333px; top: 726px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 12px; display: inline-flex">
+                <div data-layer="Title" class="Title" style="align-self: stretch; color: white; font-size: 30px; font-family: Satoshi; font-weight: 500; line-height: 28px; word-wrap: break-word">Title</div>
+                <div data-layer="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore" class="LoremIpsumDolorSitAmetConsecteturAdipiscingElitSedDoEiusmodTemporIncididuntUtLaboreEtDolore" style="width: 164px; text-align: justify; color: white; font-size: 16px; font-family: Satoshi; font-weight: 400; line-height: 20px; word-wrap: break-word">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore </div>
+            </div>
+            <div data-layer="We're Here" class="WeReHere" style="width: 290px; left: 897px; top: 272px; position: absolute; color: white; font-size: 80px; font-family: Satoshi; font-weight: 500; line-height: 79px; word-wrap: break-word">We're Here</div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="page-nav">
+        <button class="nav-btn" onclick="showPage1()">Home</button>
+        <button class="nav-btn" onclick="showPage2()">Insights</button>
+    </div>
+
+    <script>
+        // Function to show Page 1 (Home)
+        function showPage1() {
+            document.getElementById('page1').classList.add('active');
+            document.getElementById('page2').classList.remove('active');
+        }
+        
+        // Function to show Page 2 (Insights)
+        function showPage2() {
+            document.getElementById('page2').classList.add('active');
+            document.getElementById('page1').classList.remove('active');
+        }
+        
+        // Initialize with Page 1
+        showPage1();
+    </script>
 </body>
 </html>
